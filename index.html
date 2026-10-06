@@ -143,6 +143,21 @@
   }
   section.notes p { margin: 0 0 0.75rem; max-width: 34rem; }
 
+  section.privacy {
+    margin-top: 3.5rem;
+    max-width: 44rem;
+    padding: 1.5rem 1.5rem 1rem;
+    background: var(--paper);
+    border: 1px solid var(--rule-strong);
+  }
+  section.privacy h3 {
+    font-size: 0.975rem;
+    font-weight: 600;
+    margin: 1.25rem 0 0.35rem;
+  }
+  section.privacy p { margin: 0 0 0.75rem; }
+  section.privacy .updated { color: var(--muted); font-size: 0.9rem; margin-top: 1rem; }
+
   footer {
     margin-top: 4rem;
     padding-top: 1rem;
@@ -253,9 +268,32 @@
     </div>
   </section>
 
+  <section class="privacy" id="privacy">
+    <h2>Privacy</h2>
+    <p>Short version: I don't collect anything about you, and I can't see what you do in these tools.</p>
+
+    <h3>This site</h3>
+    <p>There are no accounts, cookies, ads, or analytics trackers on this page or the tools linked from it. I don't receive any information about who visits.</p>
+
+    <h3>Data you enter in the tools</h3>
+    <p>The tools run entirely in your browser. Files you load and changes you make are stored on your own computer, in your browser's local storage, and stay there until you clear them. Nothing is sent to me or saved on a server I control. To keep or share your work, use each tool's save or export option.</p>
+
+    <h3>Curriculum Analyzer and the Anthropic API</h3>
+    <p>When you run an extraction, the syllabus you uploaded and the API key you entered are sent directly from your browser to Anthropic's API (api.anthropic.com) so Claude can read the document. Nothing else is sent, and nothing goes anywhere until you click Run Extraction. Your API key is saved only in your browser. How Anthropic handles that data is covered by the terms of the API account the key belongs to.</p>
+    <p>The tool never asks for your University of Utah login, passwords, or personal information. If any page here ever does, it isn't mine.</p>
+
+    <h3>Third-party services</h3>
+    <p>This site is hosted by GitHub Pages, and the page loads its fonts from Google Fonts. Like any web host, those services may log basic technical details such as your IP address and browser type. See the <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub privacy statement</a> and <a href="https://policies.google.com/privacy">Google privacy policy</a> for details.</p>
+
+    <h3>Questions</h3>
+    <p>These are personal projects, not official University of Utah websites. If you have a question or concern, reach me through <a href="https://github.com/n8thanielz">GitHub</a>.</p>
+
+    <p class="updated">Last updated October 2026</p>
+  </section>
+
   <footer>
     <p>Nate Zwart, Program Director, School of Accounting, David Eccles School of Business, University of Utah</p>
-    <p><a href="https://github.com/n8thanielz">github.com/n8thanielz</a></p>
+    <p><a href="https://github.com/n8thanielz">github.com/n8thanielz</a> | <a href="#privacy">Privacy</a></p>
   </footer>
 
 </div>
