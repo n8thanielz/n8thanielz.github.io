@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nate Zwart | Tools for the School of Accounting</title>
+<meta name="description" content="Browser-based tools Nate Zwart built for the University of Utah School of Accounting and the David Eccles School of Business.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;800&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f1f5ee;
+    --rule: #c9dac4;
+    --rule-strong: #8fae88;
+    --ink: #1c2a22;
+    --muted: #55665a;
+    --crimson: #be0000;
+    --crimson-ink: #9a0000;
+    --live: #2f6b3a;
+    --sans: "Public Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+    --serif: "Newsreader", Georgia, "Times New Roman", serif;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #16201a;
+      --rule: #26352b;
+      --rule-strong: #3f5a45;
+      --ink: #e4ece3;
+      --muted: #9fb3a3;
+      --crimson: #ff5a5a;
+      --crimson-ink: #ff7a7a;
+      --live: #7fc98b;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #16201a;
+    --rule: #26352b;
+    --rule-strong: #3f5a45;
+    --ink: #e4ece3;
+    --muted: #9fb3a3;
+    --crimson: #ff5a5a;
+    --crimson-ink: #ff7a7a;
+    --live: #7fc98b;
+  }
+  *, *::before, *::after { box-sizing: inherit; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body {
+    margin: 0;
+    background-color: var(--paper);
+    background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 31px, var(--rule) 31px, var(--rule) 32px);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 1.0625rem;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--crimson-ink); text-underline-offset: 3px; }
+  a:hover { color: var(--crimson); }
+  a:focus-visible { outline: 3px solid var(--crimson); outline-offset: 3px; border-radius: 2px; }
+
+  .page {
+    max-width: 68rem;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 3rem;
+    border-left: 2px solid var(--crimson);
+    background: linear-gradient(to right, var(--paper) 0, var(--paper) 100%);
+    background-color: transparent;
+  }
+
+  header.intro { max-width: 40rem; margin-bottom: 3.5rem; }
+  header.intro h1 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: clamp(2.4rem, 6vw, 3.75rem);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin: 0 0 1.25rem;
+  }
+  header.intro p { margin: 0 0 1rem; color: var(--ink); }
+  header.intro .who { color: var(--muted); font-size: 0.975rem; }
+
+  h2 {
+    font-size: 1.05rem;
+    font-weight: 800;
+    margin: 0 0 0.75rem;
+  }
+
+  .ledger-wrap { overflow-x: auto; margin-bottom: 1rem; }
+  table.ledger {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--paper);
+    font-size: 0.975rem;
+  }
+  .ledger th {
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--muted);
+    padding: 0.6rem 1rem 0.6rem 0;
+    border-bottom: 2px solid var(--rule-strong);
+  }
+  .ledger td {
+    vertical-align: top;
+    padding: 1.1rem 1rem 1.1rem 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .ledger td + td, .ledger th + th { border-left: 1px solid var(--rule); padding-left: 1rem; }
+  .ledger .ref {
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+    width: 3.5rem;
+    white-space: nowrap;
+  }
+  .ledger .name { font-weight: 600; font-size: 1.05rem; display: block; margin-bottom: 0.25rem; }
+  .ledger .desc { color: var(--ink); max-width: 36rem; }
+  .ledger .for { color: var(--muted); width: 12rem; }
+  .ledger .status { width: 9rem; white-space: nowrap; }
+  .tag { font-weight: 600; font-size: 0.9rem; }
+  .tag.live { color: var(--live); }
+  .tag.dev { color: var(--muted); }
+  .ledger .status a { display: inline-block; margin-top: 0.3rem; font-size: 0.9rem; }
+
+  .ledger tfoot td {
+    border-bottom: 3px double var(--ink);
+    border-top: 1px solid var(--ink);
+    font-weight: 600;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+  }
+  .ledger tfoot .note { font-weight: 400; color: var(--muted); }
+
+  section.notes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 2.5rem;
+    margin-top: 3.5rem;
+    max-width: 60rem;
+  }
+  section.notes p { margin: 0 0 0.75rem; max-width: 34rem; }
+
+  footer {
+    margin-top: 4rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--rule-strong);
+    color: var(--muted);
+    font-size: 0.9rem;
+    max-width: 60rem;
+  }
+  footer p { margin: 0 0 0.4rem; }
+
+  @media (max-width: 760px) {
+    .page { padding: 2.5rem 1.1rem 2rem; }
+    .ledger thead { display: none; }
+    .ledger, .ledger tbody, .ledger tr, .ledger td, .ledger tfoot { display: block; width: 100%; }
+    .ledger tr { border-bottom: 1px solid var(--rule-strong); padding: 1rem 0; }
+    .ledger td { border: 0; padding: 0.2rem 0; }
+    .ledger td + td { border-left: 0; padding-left: 0; }
+    .ledger .ref, .ledger .for, .ledger .status { width: auto; }
+    .ledger .for::before { content: "Built for: "; }
+    .ledger tfoot tr { border-bottom: 3px double var(--ink); }
+    .ledger tfoot td { border: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="intro">
+    <h1>Small tools for a big spreadsheet problem</h1>
+    <p>I'm Nate Zwart, Program Director for the School of Accounting at the University of Utah's David Eccles School of Business. A lot of my job runs on schedules, syllabi, and spreadsheets that have outgrown themselves. This page collects the browser-based tools I've built to make that work faster and harder to break.</p>
+    <p class="who">Everything here is a personal project hosted on GitHub Pages. These aren't official University of Utah websites.</p>
+  </header>
+
+  <h2>What's on the shelf</h2>
+  <div class="ledger-wrap">
+    <table class="ledger">
+      <thead>
+        <tr>
+          <th scope="col">Ref.</th>
+          <th scope="col">Tool</th>
+          <th scope="col">Built for</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="ref">101</td>
+          <td class="desc">
+            <span class="name">Curriculum Analyzer</span>
+            Drop in a stack of syllabi (PDF, Word, or Excel, in whatever format faculty happened to use) and AI pulls out the course details, learning outcomes, and assessments. Each course is tagged against the Eccles Essential Skills, the NACE career readiness competencies, and Bloom's Taxonomy, then rolled up into a skills matrix and a coverage gap report by department. Results save to a database file the school can keep year over year.
+          </td>
+          <td class="for">David Eccles School of Business, dean's office</td>
+          <td class="status">
+            <span class="tag live">Live</span><br>
+            <a href="https://n8thanielz.github.io/Eccles-curriculum-analyzer/">Open the analyzer</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="ref">102</td>
+          <td class="desc">
+            <span class="name">Class Schedule Editor</span>
+            A visual way to see and adjust the accounting class schedule: who's teaching what, when, and where, without squinting at a registrar export. Also available as a Chrome extension for department staff.
+          </td>
+          <td class="for">School of Accounting staff</td>
+          <td class="status">
+            <span class="tag live">In use</span><br>
+            <a href="https://github.com/n8thanielz/Class-Schedule-Editor">View on GitHub</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="ref">103</td>
+          <td class="desc">
+            <span class="name">Academic Year Planner</span>
+            A replacement for the ACCTG Master Schedule spreadsheet. Plan the sections needed for Fall, Spring, and Summer, assign faculty, and see contract hours and overloads add up correctly, so one typo doesn't quietly break the totals.
+          </td>
+          <td class="for">School of Accounting program planning</td>
+          <td class="status"><span class="tag dev">In development</span></td>
+        </tr>
+        <tr>
+          <td class="ref">104</td>
+          <td class="desc">
+            <span class="name">Instructor History</span>
+            Answers the question that comes up every planning cycle: who has taught this course before? It reads the University's public class schedule across terms and builds a history of which ACCTG courses each instructor has taught.
+          </td>
+          <td class="for">School of Accounting program planning</td>
+          <td class="status"><span class="tag dev">In development</span></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="ref">Total</td>
+          <td colspan="3">4 tools <span class="note">and a noticeably smaller number of spreadsheets</span></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <section class="notes">
+    <div>
+      <h2>How they work</h2>
+      <p>Each tool is a single web page that runs in your browser. There's nothing to install and no account to create. Most of them keep your data on your own computer and let you save or export a file when you're done.</p>
+      <p>The Curriculum Analyzer uses the Anthropic API to read syllabi. The API key you enter stays in your browser and is only sent to Anthropic when you run an extraction.</p>
+    </div>
+    <div>
+      <h2>Why build them</h2>
+      <p>Our department's value is Students First. Every hour saved on schedule wrangling and spreadsheet repair is an hour that goes back to advising, curriculum, and the students we're here for.</p>
+      <p>I build these with Claude Code and keep the code on GitHub so colleagues can see how they work and pick them up later.</p>
+    </div>
+  </section>
+
+  <footer>
+    <p>Nate Zwart, Program Director, School of Accounting, David Eccles School of Business, University of Utah</p>
+    <p><a href="https://github.com/n8thanielz">github.com/n8thanielz</a></p>
+  </footer>
+
+</div>
+</body>
+</html>
